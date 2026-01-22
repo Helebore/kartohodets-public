@@ -1,0 +1,85 @@
+{
+  "1": [
+    "is this your house?",
+    "are you looking out the window right now?",
+    "no comments needed here",
+    "okay, we get it",
+    "way too accurate",
+    "pure skill"
+  ],
+  "10": [
+    "you’ve definitely been here",
+    "even vegans would eat this meat",
+    "experience shows",
+    "that’s above average"
+  ],
+  "50": [
+    "very accurate",
+    "alright, you’re giving yourself away",
+    "local resident",
+    "be honest — you’ve been here",
+    "you clearly know this area",
+    "almost perfect"
+  ],
+  "100": [
+    "you’ve definitely been here before",
+    "you can feel it",
+    "almost nailed it",
+    "just a little more",
+    "the logic was absolutely right",
+    "progress is obvious"
+  ],
+  "500": [
+    "that was close",
+    "just a bit more",
+    "solid",
+    "your hand slipped",
+    "you were on the right track",
+    "calm and precise",
+    "good job"
+  ],
+  "1000": [
+    "somewhere nearby, honestly",
+    "not bad, really not bad",
+    "there is logic here",
+    "totally respectable",
+    "good spatial awareness"
+  ],
+  "2000": [
+    "right region",
+    "you were on the right path",
+    "not a random guess anymore",
+    "good attempt",
+    "you’re starting to read the map"
+  ],
+  "5000": [
+    "you got the continent — that matters",
+    "on a global scale, that’s fine",
+    "you were thinking big",
+    "not precise, but logical",
+    "strategically correct",
+    "you didn’t lose context"
+  ],
+  "10000": [
+    "at least the planet was right",
+    "everyone starts like this",
+    "this is part of the process",
+    "take your time, you’re learning",
+    "mistakes are normal here",
+    "you don’t have to be perfect",
+    "you were thinking broader",
+    "it’s not just about the result",
+    "this is just the beginning",
+    "it gets more interesting from here",
+    "far away…",
+    "relax, everything’s going as it should"
+  ],
+  "+": [
+    "same planet — already a win",
+    "hitting that spot on the first try is hard",
+    "it’ll get better",
+    "that was just a warm-up",
+    "next round will be better",
+    "don’t give up — it gets more interesting"
+  ]
+}

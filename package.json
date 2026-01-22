@@ -1,0 +1,15 @@
+{
+  "name": "kartohodets",
+  "version": "1.0.0",
+  "description": "Kartohodets Multiplayer Game",
+  "main": "index.html",
+  "scripts": {
+    "start": "echo 'Starting frontend... Open http://localhost:8000 in browser' && echo 'Run backend separately with: cd backend && python app.py'",
+    "backend": "cd backend && python app.py",
+    "install-deps": "npm install && cd backend && pip install -r requirements.txt"
+  },
+  "dependencies": {
+    "three": "^0.182.0"
+  },
+  "type": "commonjs"
+}
