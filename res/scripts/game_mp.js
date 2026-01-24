@@ -50,7 +50,7 @@ const PLACE_COLORS = [
 // сокет
 let socket = null;
 //const WS_URL = `ws://localhost:8000/ws/lobby/${lobbyId}`; // Адрес вебсокета
-const WS_URL = `wss://localhost:8000/ws/lobby/${lobbyId}?email=${appState.user}`; //адрес вебсокета
+const WS_URL = `wss://kartohodets.com/ws/lobby/${lobbyId}?email=${appState.user}`; //адрес вебсокета
 
 function connectWebSocket() {
     //аутентификация
