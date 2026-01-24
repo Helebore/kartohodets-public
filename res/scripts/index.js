@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:8000";
+const API_BASE_URL = "https://kartohodets.com/api";
 const CLIENT_ID = CONFIG.GOOGLE_CLIENT_ID;
 
 // Состояние приложения
