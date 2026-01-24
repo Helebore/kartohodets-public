@@ -1,4 +1,4 @@
-const API_BASE_URL = "https://kartohodets.com/api";
+const API_BASE_URL = "https://kartohodets.com";
 const CLIENT_ID = CONFIG.GOOGLE_CLIENT_ID;
 
 // Состояние приложения

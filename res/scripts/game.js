@@ -1,4 +1,4 @@
-const API_BASE_URL = "https://kartohodets.com/api";
+const API_BASE_URL = "https://kartohodets.com";
 
 const game = {
     map: null,
