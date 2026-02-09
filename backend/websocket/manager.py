@@ -53,8 +53,11 @@ class ConnectionManager:
         )
 
     async def disconnect_from_lobby(self, websocket: WebSocket, lobby_code: int, email: str, db: Session):
-        #UserService.zero_temp_score(db, email)
-        #UserService.remove_user_from_room(db, email)
+        try:
+            UserService.zero_temp_score(db, email)
+            UserService.remove_user_from_room(db, email)
+        except Exception as e:
+            print(f"Error cleaning user data: {e}")
         
         if lobby_code in self.active_lobbies:
             if websocket in self.active_lobbies[lobby_code]:
@@ -62,8 +65,11 @@ class ConnectionManager:
             #Если лобби опустело чистим
             if not self.active_lobbies[lobby_code]:
                 del self.lobby_state[lobby_code]
-                pass
-
+                print(f"Lobby {lobby_code} is empty and removed from active_lobbies")
+        if hasattr(self, 'lobby_state') and lobby_code in self.lobby_state:
+             if lobby_code not in self.active_lobbies or not self.active_lobbies[lobby_code]:
+                del self.lobby_state[lobby_code]
+                print(f"Lobby {lobby_code} removed from lobby_state")
 
     async def broadcast_to_lobby(self, lobby_code: int, message: dict):
         """Отправка сообщения всем в лобби с обработкой ошибок"""
