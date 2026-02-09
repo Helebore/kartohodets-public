@@ -48,9 +48,8 @@ async def lobby_websocket(
             if data.get("type") == "start_game":
                 await connection_manager.handle_start_game(lobby_code)
 
-            elif data.get("type") == "pano_id":
-                await connection_manager.handle_pano_id(lobby_code, data.get("pano_id"), db)
-                print(data.get("pano_id"))
+            elif data.get("type") == "request_new_round":
+                await connection_manager.generate_new_round(lobby_code, db)
 
             elif data.get("type") == "first_ans":
                 await connection_manager.handle_first_ans(lobby_code)

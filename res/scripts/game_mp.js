@@ -20,7 +20,7 @@ const game = {
 
 let appState = JSON.parse(localStorage.getItem('appState'));
 let phrases = null;
-const defaultCoords = [{ lat: 56.85579951654341, lng: 60.60928861349073 },
+/*const defaultCoords = [{ lat: 56.85579951654341, lng: 60.60928861349073 },
 { lat: 52.649582917138396, lng: 59.57200213771839 },
 { lat: 22.268200851747338, lng: 114.18165355915593 },
 { lat: 45.75135435140489, lng: 21.229017727754133 },
@@ -31,7 +31,7 @@ const defaultCoords = [{ lat: 56.85579951654341, lng: 60.60928861349073 },
 { lat: 35.87010014591649, lng: 140.04907400101646 },
 { lat: -33.27521248406271, lng: 148.015133145926 },
 { lat: 62.529648406525176, lng: 113.976881375484 },
-];
+];*/
 let countUpdate = 0;
 
 const PLACE_COLORS = [
@@ -49,6 +49,7 @@ const PLACE_COLORS = [
 
 // сокет
 let socket = null;
+let reconnectInterval = null;
 //const WS_URL = `ws://localhost:8000/ws/lobby/${lobbyId}`; // Адрес вебсокета
 const WS_URL = `wss://kartohodets.com/ws/lobby/${lobbyId}?email=${appState.user}`; //адрес вебсокета
 
@@ -58,13 +59,34 @@ function connectWebSocket() {
 
     socket.onopen = () => {
         console.log("WS Game connection established");
-        updateStreetView();
+        if (reconnectInterval) {
+            clearInterval(reconnectInterval);
+            reconnectInterval = null;
+        }
+        if (isHost && !game.panoId && countUpdate === 0) {
+            updateStreetView();
+        }
     };
 
     socket.onmessage = (event) => {
         const msg = JSON.parse(event.data);
         handleServerMessage(msg);
     };
+    socket.onclose = (e) => {
+        console.log('Socket is closed. Reconnect will be attempted in 1 second.', e.reason);
+        if (!reconnectInterval) {
+            reconnectInterval = setInterval(() => {
+                console.log("Attempting reconnect...");
+                connectWebSocket();
+            }, 1000);
+        }
+    };
+
+    socket.onerror = (err) => {
+        console.error('Socket encountered error: ', err.message, 'Closing socket');
+        socket.close();
+    };
+
 }
 
 function handleServerMessage(msg) {
@@ -205,44 +227,23 @@ function attachUIEvents() {
 
 function updateStreetView() {
     countUpdate++;
-
     console.log('updateStreetView', isHost)
     const svService = new google.maps.StreetViewService();
     showGameUI('search');
     if (isHost) {
-        let coords = getRandomCoords();
-        if (countUpdate > 10) {
-            coords = defaultCoords[Math.floor(Math.random() * defaultCoords.length)];
+        if (socket && socket.readyState === WebSocket.OPEN) {
+            console.log("Requesting new round from server...");
+            socket.send(JSON.stringify({
+                type: 'request_new_round', // Новый тип сообщения
+                currentLobby: appState.currentLobby
+            }));
+        } else {
+            console.error("Socket not ready to request round");
         }
-        svService.getPanorama({ location: coords, radius: 5000 }, (data, status) => {
-            if (status === google.maps.StreetViewStatus.OK) {
-                game.ansLoc = data.location.latLng;
-                game.streetView.setPosition(game.ansLoc);
-                showGameUI('guess');
-
-                //хост отправляет pano_id
-
-                if (socket && socket.readyState === WebSocket.OPEN) {
-                    socket.send(JSON.stringify({
-                        type: 'pano_id',
-                        pano_id: data.location.pano,
-                        currentLobby: appState.currentLobby
-                    }));
-                    console.log(data.location.pano)
-                    // smoothRedirect вызывается в handleLobbyMessage когда сервер ответит всем game_started
-                } else {
-                    console.error("Socket not ready");
-                }
-                //хост отправляет pano_id
-
-            } else {
-                updateStreetView(); //если панорама не найдена
-            }
-        });
-    }
-    else {
+    } else {
         /*game.panoId='umcDun81PnfGiw05xxrTOA';
         updateStreetViewPlayer()*/
+        console.log("Waiting for host to start round...");
     }
 }
 
